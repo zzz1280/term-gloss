@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>示例回复</title>
+<style>
+:root{--ink:#1f2328;--soft:#57606a;--faint:#8b949e;--line:#e6e2da;--acc:#0e7490;--accs:#e0f2f5;--warn:#b45309;--bgi:#f7f6f3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bgi);color:var(--ink);font:16px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:40px 24px 100px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;font-size:13px;color:var(--soft);border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:28px}
+.bar b{color:var(--ink);font-weight:600}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px;font:inherit;font-size:12.5px;color:var(--soft);cursor:pointer;display:inline-block;user-select:none}
+.btn:hover{border-color:#d6d0c4;color:var(--ink)}
+.modeinput{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+article{background:#fff;border:1px solid var(--line);border-radius:14px;padding:30px 32px;box-shadow:0 1px 3px rgba(20,19,17,.03)}
+article p{margin:0 0 15px;text-align:justify}
+article h2{font-size:19px;margin:26px 0 12px;line-height:1.4}
+article h3{font-size:16px;margin:22px 0 10px}
+article ul,article ol{margin:0 0 15px;padding-left:22px}
+article li{margin:4px 0}
+article pre{background:#f6f4ef;border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow:auto;font-size:13px;line-height:1.6}
+article code{background:#f1efe8;border-radius:4px;padding:1px 5px;font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+article pre code{background:none;padding:0}
+article blockquote{margin:0 0 15px;padding:2px 0 2px 14px;border-left:3px solid var(--line);color:var(--soft)}
+article table{border-collapse:collapse;width:100%;margin:0 0 16px;font-size:14px}
+article th,article td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+article th{background:#faf9f6;font-weight:600}
+article hr{border:0;border-top:1px solid var(--line);margin:24px 0}
+.gloss{position:relative;cursor:help;border-bottom:1.5px dotted var(--acc);padding-bottom:.5px;border-radius:2px}
+.gloss:hover{background:var(--accs)}
+.gloss.lv1{border-bottom-width:2px}
+.gloss::after{display:none;content:"（" attr(data-brief) "）";font-size:.85em;color:var(--soft);background:#f5f3ee;border-radius:4px;padding:0 4px;margin-left:2px}
+.gloss::before{display:none;content:attr(data-tip);white-space:pre-line;position:absolute;left:0;bottom:calc(100% + 9px);width:300px;max-width:72vw;background:#fffdf9;border:1px solid #e0dbd0;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.65;color:var(--ink);font-weight:400;text-align:left;letter-spacing:0;box-shadow:0 10px 26px -10px rgba(28,25,20,.28);z-index:30}
+.gloss:hover::before,.gloss:focus::before{display:block}
+#open:checked ~ .wrap .gloss::after{display:inline}
+#open:checked ~ .wrap .gloss:hover::before{display:none}
+#open:checked ~ .wrap .btn-off{display:none}
+#open:not(:checked) ~ .wrap .btn-on{display:none}
+.glossary{margin-top:34px;border-top:1px solid var(--line);padding-top:22px}
+.glossary h2{font-size:13px;letter-spacing:.02em;margin:0 0 4px}
+.glossary .hint{font-size:11.5px;color:var(--faint);margin:0 0 14px}
+.glossary dl{margin:0;font-size:13.5px}
+.glossary dt{font-weight:600;margin-top:11px}
+.glossary dd{margin:2px 0 0;color:var(--soft);font-size:12.5px;line-height:1.65}
+.glossary .mi{color:var(--faint)}
+.empty{color:var(--faint);font-size:12.5px;line-height:1.7}
+.foot{margin-top:26px;font-size:11.5px;color:var(--faint);line-height:1.8}
+</style>
+</head>
+<body>
+<input class="modeinput" type="checkbox" id="open">
+<div class="wrap">
+  <div class="bar">
+    <span><b>术语注释层</b> · 标注 16 处 / 16 个术语（L1 5）</span>
+    <span>
+      <label for="open" class="btn btn-off">全部展开注释</label>
+      <label for="open" class="btn btn-on">收起注释</label>
+    </span>
+  </div>
+  <article><h2>接口改造与新模型上线（示例回复）</h2>
+<p>这次改造整体上做完了：新接口已经在<span class="gloss lv2" data-k="灰度" data-brief="先让一小部分用户或流量用新版本，没问题再全量。" data-tip="背景｜先让一小部分用户或流量用新版本，没问题再全量。&#10;别理解成：不是“慢慢上线”；本质是拿小流量当探测器。" tabindex="0">灰度</span>阶段跑了三天，10% 的流量下没有出现<span class="gloss lv2" data-k="静默失败" data-brief="出错了但没人知道：不报错、不报警，只是结果悄悄变差。" data-tip="背景｜出错了但没人知道：不报错、不报警，只是结果悄悄变差。&#10;别理解成：不是崩溃；崩溃反而是好事，至少你知道出事了。" tabindex="0">静默失败</span>。但先说一段<span class="gloss lv2" data-k="局限性声明" data-brief="主动交代这套方法在什么情况下不管用。" data-tip="背景｜主动交代这套方法在什么情况下不管用。&#10;别理解成：不是谦虚，也不是免责；跳过它，你会把结论用到不该用的地方。" tabindex="0">局限性声明</span>——目前的数字只覆盖校内网络环境，校外弱网下的表现还没测。</p>
+<h2>关键数字</h2>
+<table><thead><tr><th>指标</th><th>上一版</th><th>本版</th></tr></thead><tbody><tr><td>情感分类 <span class="gloss lv1" data-k="Macro-F1" data-brief="综合“判得准”和“判得全”的分数，且每个类别权重相同。" data-tip="影响结论｜综合“判得准”和“判得全”的分数，且每个类别权重相同。&#10;别理解成：不是准确率；类别多、样本少时，它对最小的那个类别极其敏感。" tabindex="0">Macro-F1</span></td><td>0.71</td><td>0.78</td></tr><tr><td><span class="gloss lv1" data-k="拒识率" data-brief="系统主动表示“我判不了 / 不回答”的样本比例。" data-tip="影响结论｜系统主动表示“我判不了 / 不回答”的样本比例。&#10;别理解成：不是错误率；判得更果断，不等于判得更对——这是最容易误读的一处。" tabindex="0">拒识率</span></td><td>12.4%</td><td>8.1%</td></tr><tr><td>接口 P95 延迟</td><td>640ms</td><td>210ms</td></tr></tbody></table>
+<h2><span class="gloss lv2" data-k="管线" data-brief="把多个处理步骤串成一条固定链路，前一步的输出就是后一步的输入。" data-tip="背景｜把多个处理步骤串成一条固定链路，前一步的输出就是后一步的输入。&#10;别理解成：不是抽象架构图；它是可以逐段测量、逐段替换的具体链路。" tabindex="0">管线</span></h2>
+<ol><li>采集课程评价，每天一次</li><li>清洗与去重</li><li>情感分类模型打分</li><li>写入看板数据库</li></ol>
+<p><span class="gloss lv3" data-k="阈值" data-brief="一条分界线：超过就按 A 处理，低于就按 B 处理。" data-tip="可跳过｜一条分界线：超过就按 A 处理，低于就按 B 处理。&#10;别理解成：不是固定的标准值；调它等于在“多判”和“判错”之间换挡。" tabindex="0">阈值</span>写在配置文件里：</p>
+<pre><code>CONFIDENCE_THRESHOLD = 0.55  # 低于此值走降级策略</code></pre>
+<blockquote>评价入库这一步必须<span class="gloss lv3" data-k="幂等" data-brief="同样的操作执行一次和执行多次，结果一样。" data-tip="可跳过｜同样的操作执行一次和执行多次，结果一样。&#10;别理解成：不是“可重复”，是“重复了也不出事”——重试安全的前提。" tabindex="0">幂等</span>：同一条评价重跑三次，库里也只能有一条记录。</blockquote>
+<p>模型侧还是老问题：<span class="gloss lv1" data-k="类别不平衡" data-brief="各个类别的样本数量差很多，有的类别特别少。" data-tip="影响结论｜各个类别的样本数量差很多，有的类别特别少。&#10;别理解成：不只是“分布不均”；它会让模型直接放弃小类别，还让准确率虚高。" tabindex="0">类别不平衡</span>。好评占七成多，差评样本很少，所以 Macro-F1 比总体准确率更能反映真实水平。训练数据里还有相当比例的<span class="gloss lv1" data-k="标签噪声" data-brief="用来当“标准答案”的数据本身就标错了。" data-tip="影响结论｜用来当“标准答案”的数据本身就标错了。&#10;别理解成：不是模型预测错，是答案有问题——两者要分开算账。" tabindex="0">标签噪声</span>——标注是几个同学分工做的，标准不完全一致。理论上还存在<span class="gloss lv1" data-k="数据泄漏" data-brief="测试集的信息提前漏进了训练，导致测出来的分数虚高。" data-tip="影响结论｜测试集的信息提前漏进了训练，导致测出来的分数虚高。&#10;别理解成：不是隐私意义上的数据泄露，是评测被污染了。" tabindex="0">数据泄漏</span>的风险：同一门课的评价如果同时进了训练集和测试集，分数就会虚高，这次已经按课程做了切分。</p>
+<p>接口层做了三件事。一是给调用方一份<span class="gloss lv2" data-k="契约" data-brief="双方约定好的接口格式：我给什么、你返回什么，格式不能变。" data-tip="背景｜双方约定好的接口格式：我给什么、你返回什么，格式不能变。&#10;别理解成：不是法律合同，也不是说明文档；它是代码层面的强约定。" tabindex="0">契约</span>，字段名和类型固定，不再随手加字段。二是把模型调用包在 <span class="gloss lv2" data-k="hook" data-brief="挂在流程某个节点上的自动触发器，流程走到那儿就执行你预设的动作。" data-tip="背景｜挂在流程某个节点上的自动触发器，流程走到那儿就执行你预设的动作。&#10;别理解成：不是插件，也不是普通的回调函数；它强调“在别人的流程里插一脚”。" tabindex="0">hook</span> 里，超时或报错就触发<span class="gloss lv2" data-k="降级" data-brief="主方案不可用时退到次优方案继续跑，而不是直接报错。" data-tip="背景｜主方案不可用时退到次优方案继续跑，而不是直接报错。&#10;别理解成：不是失败，也不是妥协，是有意设计的兜底路径。" tabindex="0">降级</span>，回落到上一版的规则打分，不让用户直接看到失败。三是保留<span class="gloss lv3" data-k="回滚" data-brief="把系统退回到上一个已知可用的状态。" data-tip="可跳过｜把系统退回到上一个已知可用的状态。&#10;别理解成：不是撤销某一步操作，也不是重跑一遍。" tabindex="0">回滚</span>开关，出问题一条命令退回旧版本。</p>
+<p>拒识率从 12.4% 降到 8.1%，但这不是错误率下降——判得更果断，不等于判得更对。</p>
+<p>下一步想加一个<span class="gloss lv2" data-k="基线" data-brief="用来做对比的最低标准：新方法至少要明显比它好。" data-tip="背景｜用来做对比的最低标准：新方法至少要明显比它好。&#10;别理解成：不是及格线，也不是最优解；基线太弱时，“提升”没有意义。" tabindex="0">基线</span>对照组，用最简单的关键词规则跑一遍，确认模型确实比它强，而不是只跟自己的上一版比。</p></article>
+  <div class='glossary'><h2>本文术语</h2><p class='hint'>按首次出现顺序排列，标注为影响结论的词需要重点记。</p><dl><dt>灰度<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>先让一小部分用户或流量用新版本，没问题再全量。<br><span class='mi'>别理解成：不是“慢慢上线”；本质是拿小流量当探测器。</span></dd><dt>静默失败<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>出错了但没人知道：不报错、不报警，只是结果悄悄变差。<br><span class='mi'>别理解成：不是崩溃；崩溃反而是好事，至少你知道出事了。</span></dd><dt>局限性声明<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>主动交代这套方法在什么情况下不管用。<br><span class='mi'>别理解成：不是谦虚，也不是免责；跳过它，你会把结论用到不该用的地方。</span></dd><dt>Macro-F1<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　影响结论</span></dt><dd>综合“判得准”和“判得全”的分数，且每个类别权重相同。<br><span class='mi'>别理解成：不是准确率；类别多、样本少时，它对最小的那个类别极其敏感。</span></dd><dt>拒识率<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　影响结论</span></dt><dd>系统主动表示“我判不了 / 不回答”的样本比例。<br><span class='mi'>别理解成：不是错误率；判得更果断，不等于判得更对——这是最容易误读的一处。</span></dd><dt>管线<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>把多个处理步骤串成一条固定链路，前一步的输出就是后一步的输入。<br><span class='mi'>别理解成：不是抽象架构图；它是可以逐段测量、逐段替换的具体链路。</span></dd><dt>阈值<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　可跳过</span></dt><dd>一条分界线：超过就按 A 处理，低于就按 B 处理。<br><span class='mi'>别理解成：不是固定的标准值；调它等于在“多判”和“判错”之间换挡。</span></dd><dt>幂等<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　可跳过</span></dt><dd>同样的操作执行一次和执行多次，结果一样。<br><span class='mi'>别理解成：不是“可重复”，是“重复了也不出事”——重试安全的前提。</span></dd><dt>类别不平衡<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　影响结论</span></dt><dd>各个类别的样本数量差很多，有的类别特别少。<br><span class='mi'>别理解成：不只是“分布不均”；它会让模型直接放弃小类别，还让准确率虚高。</span></dd><dt>标签噪声<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　影响结论</span></dt><dd>用来当“标准答案”的数据本身就标错了。<br><span class='mi'>别理解成：不是模型预测错，是答案有问题——两者要分开算账。</span></dd><dt>数据泄漏<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　影响结论</span></dt><dd>测试集的信息提前漏进了训练，导致测出来的分数虚高。<br><span class='mi'>别理解成：不是隐私意义上的数据泄露，是评测被污染了。</span></dd><dt>契约<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>双方约定好的接口格式：我给什么、你返回什么，格式不能变。<br><span class='mi'>别理解成：不是法律合同，也不是说明文档；它是代码层面的强约定。</span></dd><dt>hook<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>挂在流程某个节点上的自动触发器，流程走到那儿就执行你预设的动作。<br><span class='mi'>别理解成：不是插件，也不是普通的回调函数；它强调“在别人的流程里插一脚”。</span></dd><dt>降级<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>主方案不可用时退到次优方案继续跑，而不是直接报错。<br><span class='mi'>别理解成：不是失败，也不是妥协，是有意设计的兜底路径。</span></dd><dt>回滚<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　可跳过</span></dt><dd>把系统退回到上一个已知可用的状态。<br><span class='mi'>别理解成：不是撤销某一步操作，也不是重跑一遍。</span></dd><dt>基线<span style='font-weight:400;color:#8b949e;font-size:11.5px'>　背景</span></dt><dd>用来做对比的最低标准：新方法至少要明显比它好。<br><span class='mi'>别理解成：不是及格线，也不是最优解；基线太弱时，“提升”没有意义。</span></dd></dl></div>
+  <p class="foot">原文逐字未改，注释是渲染时外挂的 span；复制正文得到的是干净原文。<br>
+  词源 data/glossary.json（54 条）。悬停或 Tab 聚焦带下划线的词看解释。</p>
+</div>
+</body>
+</html>

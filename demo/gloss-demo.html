@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>术语注释层 · 交互原型</title>
+<style>
+  :root{
+    --bg:#f7f6f3;--paper:#ffffff;--ink:#1f2328;--soft:#57606a;--faint:#8b949e;
+    --line:#e6e2da;--acc:#0e7490;--accs:#e0f2f5;--warn:#b45309;--warns:#fef3e2;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--ink);font-size:16px;line-height:1.85;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .modeinput{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 96px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:26px;align-items:start}
+  @media (max-width:980px){.wrap{grid-template-columns:1fr}}
+
+  header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--line)}
+  h1{font-size:22px;line-height:1.4;margin:0 0 6px;letter-spacing:-.01em}
+  .sub{color:var(--soft);font-size:13.5px;max-width:620px;line-height:1.7;margin:0}
+  .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .seg{display:inline-flex;background:#efece6;border-radius:9px;padding:3px;gap:2px}
+  .seg label{padding:6px 13px;border-radius:7px;font-size:13px;color:var(--soft);cursor:pointer;user-select:none;transition:.15s}
+  .seg label:hover{color:var(--ink)}
+  #m1:checked ~ .wrap label[for="m1"],
+  #m2:checked ~ .wrap label[for="m2"],
+  #m3:checked ~ .wrap label[for="m3"]{background:var(--paper);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .ghost{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px 13px;font-size:13px;color:var(--soft);cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+  .ghost:hover{border-color:#d6d0c4;color:var(--ink)}
+  .badge{background:var(--acc);color:#fff;border-radius:20px;font-size:11px;min-width:18px;height:18px;padding:0 5px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;line-height:1}
+
+  .msg{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:28px 30px 30px;box-shadow:0 1px 3px rgba(20,19,17,.03)}
+  .msg-head{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px dashed var(--line)}
+  .avatar{width:24px;height:24px;border-radius:6px;background:#0e7490;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .who{font-size:13px;font-weight:600;color:var(--soft)}
+  .tag{font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+  .msg p{margin:0 0 15px;text-align:justify}
+  .msg p:last-child{margin-bottom:0}
+
+  .gloss{position:relative;cursor:help;border-bottom:1.5px dotted var(--acc);padding-bottom:.5px;border-radius:2px}
+  .gloss.lv1{border-bottom-width:2px}
+  .gloss:hover{background:var(--accs)}
+  .gloss.saved{background:var(--warns);border-bottom-color:var(--warn);border-bottom-style:solid}
+
+  .gloss::after{display:none;content:"（" attr(data-brief) "）";font-size:.85em;color:var(--soft);background:#f5f3ee;border-radius:4px;padding:0 4px;margin-left:2px;white-space:normal}
+
+  .gloss::before{
+    display:none;content:attr(data-tip);white-space:pre-line;
+    position:absolute;left:0;bottom:calc(100% + 9px);width:310px;max-width:78vw;
+    background:#fffdf9;border:1px solid #e0dbd0;border-radius:10px;padding:11px 13px;
+    font-size:13px;line-height:1.65;color:var(--ink);font-weight:400;text-align:left;letter-spacing:0;
+    box-shadow:0 10px 26px -10px rgba(28,25,20,.28);z-index:30;
+  }
+  #m1:checked ~ .wrap .gloss:hover::before,
+  #m1:checked ~ .wrap .gloss:focus::before,
+  #m2:checked ~ .wrap .gloss:hover::before,
+  #m2:checked ~ .wrap .gloss:focus::before{display:block}
+  #m2:checked ~ .wrap .gloss::after{display:inline}
+  #m3:checked ~ .wrap .gloss{border-bottom:0;background:none;cursor:auto}
+  #m3:checked ~ .wrap .gloss::before{display:none}
+
+  aside{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px}
+  aside h2{font-size:13px;margin:0 0 3px;letter-spacing:.02em}
+  aside .desc{font-size:11.5px;color:var(--faint);margin:0 0 13px;line-height:1.6}
+  .list{list-style:none;margin:0;padding:0;max-height:44vh;overflow:auto}
+  .list li{display:flex;gap:8px;align-items:baseline;padding:7px 0;border-bottom:1px solid #f2efe8;font-size:13px}
+  .list li:last-child{border-bottom:0}
+  .list .t{font-weight:600;flex:0 0 auto}
+  .list .b{color:var(--faint);font-size:11.5px;line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .empty{color:var(--faint);font-size:12px;line-height:1.7;padding:10px 0;margin:0}
+  .aside-foot{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);display:flex;gap:8px}
+  .aside-foot button{flex:1;font-size:12px;padding:6px;border:1px solid var(--line);background:#fbfaf7;border-radius:7px;cursor:pointer;font-family:inherit;color:var(--soft)}
+  .aside-foot button:hover{border-color:#d6d0c4;color:var(--ink)}
+
+  .notice{grid-column:1/-1;font-size:12px;color:var(--faint);line-height:1.8;border-top:1px solid var(--line);padding-top:16px;margin-top:8px}
+  .notice code{background:#efece6;border-radius:4px;padding:1px 5px;font-size:11.5px}
+  .js-only{display:none}
+  html.js .js-only{display:block}
+</style>
+</head>
+<body>
+
+<input class="modeinput" type="radio" name="mode" id="m1" checked>
+<input class="modeinput" type="radio" name="mode" id="m2">
+<input class="modeinput" type="radio" name="mode" id="m3">
+
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>术语注释层 · 交互原型</h1>
+      <p class="sub">原文一个字符都没改，只在命中的词上加一层虚线。悬停看解释，点一下收入生词本。切换三档，感受「解释密度」对阅读的影响。</p>
+    </div>
+    <div class="toolbar">
+      <div class="seg" role="group" aria-label="注释密度">
+        <label for="m1">仅首现</label>
+        <label for="m2">全部展开</label>
+        <label for="m3">关闭</label>
+      </div>
+      <div class="js-only"><button class="ghost" id="toggleBook">生词本 <span class="badge" id="count">0</span></button></div>
+    </div>
+  </header>
+
+  <main>
+    <article class="msg">
+      <div class="msg-head">
+        <div class="avatar">AI</div>
+        <span class="who">agent</span>
+        <span class="tag">示例回复</span>
+      </div>
+
+      <p>这次改造整体上做完了：新接口已经在<span class="gloss lv2" data-k="灰度" data-brief="先让小流量用新版本，没问题再全量。" data-tip="背景｜先让小流量用新版本，没问题再全量。
+别理解成：慢慢上线——本质是拿小流量当探测器。" tabindex="0">灰度</span>阶段跑了三天，10% 的流量下没有出现<span class="gloss lv2" data-k="静默失败" data-brief="出错了但没人知道，结果悄悄变差。" data-tip="背景｜出错了但没人知道：不报错、不报警，结果悄悄变差。
+别理解成：崩溃；崩溃反而是好事，至少你知道出事了。" tabindex="0">静默失败</span>。但先说一段<span class="gloss lv2" data-k="局限性声明" data-brief="主动交代这套方法在什么情况下不管用。" data-tip="背景｜主动交代这套方法在什么情况下不管用。
+别理解成：谦虚或免责——跳过它，结论会被误用。" tabindex="0">局限性声明</span>——目前的数字只覆盖校内网络环境，校外弱网还没测。</p>
+
+      <p>模型侧还是老问题：<span class="gloss lv1" data-k="类别不平衡" data-brief="各类别样本量差很多，有的类别特别少。" data-tip="影响结论｜各类别样本量差很多，有的类别特别少。
+别理解成：只是分布不均——它会让模型直接放弃小类别。" tabindex="0">类别不平衡</span>，好评占七成多，所以 <span class="gloss lv1" data-k="Macro-F1" data-brief="综合判得准和判得全，且每类权重相同。" data-tip="影响结论｜综合「判得准」和「判得全」，且每个类别权重相同。
+别理解成：准确率；类别多、样本少时，它对最小的那个类别极敏感。" tabindex="0">Macro-F1</span> 比总体准确率更能反映真实水平；训练数据里还有相当比例的<span class="gloss lv1" data-k="标签噪声" data-brief="当标准答案的数据本身就标错了。" data-tip="影响结论｜当标准答案的数据本身就标错了。
+别理解成：模型预测错——是答案有问题，两者要分开算账。" tabindex="0">标签噪声</span>，标注是几个同学分工做的，标准不完全一致。理论上还存在<span class="gloss lv1" data-k="数据泄漏" data-brief="测试集信息漏进了训练，分数会虚高。" data-tip="影响结论｜测试集的信息提前漏进了训练，分数会虚高。
+别理解成：隐私泄露——是评测被污染了。" tabindex="0">数据泄漏</span>的风险——同一门课的评价如果同时进了训练集和测试集，分数就会虚高。</p>
+
+      <p>接口层做了三件事：给调用方一份<span class="gloss lv2" data-k="契约" data-brief="约定好的接口格式，字段名和类型不能随便变。" data-tip="背景｜约定好的接口格式：我给什么、你返回什么，不能随便变。
+别理解成：文档——它是代码层面的强约定。" tabindex="0">契约</span>，字段名和类型固定；把模型调用包在 <span class="gloss lv2" data-k="hook" data-brief="挂在流程节点上的自动触发器。" data-tip="背景｜挂在流程某个节点上的自动触发器，走到那儿就执行预设动作。
+别理解成：插件或普通回调——它强调「在别人的流程里插一脚」。" tabindex="0">hook</span> 里，超时或报错就触发<span class="gloss lv2" data-k="降级" data-brief="退到次优方案继续跑，而不是报错。" data-tip="背景｜主方案不可用时退到次优方案继续跑，而不是直接报错。
+别理解成：失败或妥协——它是有意设计的兜底路径。" tabindex="0">降级</span>，回落到上一版的规则打分；保留<span class="gloss lv3" data-k="回滚" data-brief="退回到上一个已知可用的状态。" data-tip="可跳过｜退回到上一个已知可用的状态。
+别理解成：撤销某一步操作，也不是重跑一遍。" tabindex="0">回滚</span>开关，一条命令退回旧版本。</p>
+
+      <p><span class="gloss lv2" data-k="管线" data-brief="多步串成一条固定链路。" data-tip="背景｜把多个处理步骤串成一条固定链路，上一步的输出是下一步的输入。
+别理解成：抽象架构图——它是可以逐段测量、逐段替换的具体链路。" tabindex="0">管线</span>还是采集、清洗、打分、入库四步，<span class="gloss lv3" data-k="阈值" data-brief="一条分界线，超过按 A、低于按 B。" data-tip="可跳过｜一条分界线：超过按 A 处理，低于按 B 处理。
+别理解成：标准值——调它是在「多判」和「判错」之间换挡。" tabindex="0">阈值</span>写在配置里；入库必须<span class="gloss lv3" data-k="幂等" data-brief="执行一次和多次，结果一样。" data-tip="可跳过｜同样的操作执行一次和多次，结果一样。
+别理解成：可重复——是重复了也不出事，这是重试安全的前提。" tabindex="0">幂等</span>，同一条评价重跑三次也只能是一条记录。<span class="gloss lv1" data-k="拒识率" data-brief="系统主动表示判不了的样本比例。" data-tip="影响结论｜系统主动表示「我判不了 / 不回答」的样本比例。
+别理解成：错误率下降——判得更果断，不等于判得更对。" tabindex="0">拒识率</span>从 12.4% 降到 8.1%，但这不是错误率下降——判得更果断，不等于判得更对。下一步想加一个<span class="gloss lv2" data-k="基线" data-brief="做对比的最低标准。" data-tip="背景｜用来做对比的最低标准：新方法至少要明显比它好。
+别理解成：及格线——基线太弱时，「提升」没有意义。" tabindex="0">基线</span>对照组，用关键词规则跑一遍，确认模型确实比它强。</p>
+    </article>
+  </main>
+
+  <aside class="js-only">
+    <h2>生词本</h2>
+    <p class="desc">点文中任意术语收入，再点一次取消。导出的 JSON 就是词库的雏形。</p>
+    <ul class="list" id="savedList"></ul>
+    <div class="aside-foot">
+      <button id="exportBtn">导出 JSON</button>
+      <button id="clearBtn">清空</button>
+    </div>
+  </aside>
+
+  <p class="notice">
+    这一页<b>不依赖脚本</b>：悬停解释由 CSS 的 <code>attr()</code> 渲染，三档切换是纯 CSS 单选按钮。脚本只负责生词本——即使脚本被环境禁用，正文和悬停依然可用。
+    真实实现里，术语表由「本地词库命中 + 模型补位」生成，结构是 <code>{term, start, end, brief, misread}</code>——模型只给数据，不写正文。
+  </p>
+</div>
+
+<script>
+(function () {
+  try {
+    document.documentElement.classList.add('js');
+  } catch (e) { return; }
+
+  var LS_KEY = 'gloss.saved.v1';
+  var store = null;
+  try {
+    window.localStorage.setItem('__t', '1');
+    window.localStorage.removeItem('__t');
+    store = window.localStorage;
+  } catch (e) { store = null; }
+
+  var saved = new Set();
+  try {
+    if (store) {
+      var raw = store.getItem(LS_KEY);
+      if (raw) saved = new Set(JSON.parse(raw));
+    }
+  } catch (e) { saved = new Set(); }
+
+  var list = document.getElementById('savedList');
+  var count = document.getElementById('count');
+
+  function persist() {
+    try { if (store) store.setItem(LS_KEY, JSON.stringify(Array.from(saved))); } catch (e) {}
+  }
+
+  function sync() {
+    if (count) count.textContent = saved.size;
+    Array.prototype.forEach.call(document.querySelectorAll('.gloss'), function (el) {
+      if (saved.has(el.dataset.k)) el.classList.add('saved');
+      else el.classList.remove('saved');
+    });
+    if (!list) return;
+    if (!saved.size) {
+      list.innerHTML = '<li class="empty">还没有收录。点文中任意术语试试。</li>';
+      return;
+    }
+    var html = '';
+    saved.forEach(function (k) {
+      var el = document.querySelector('.gloss[data-k="' + k + '"]');
+      var brief = el ? el.dataset.brief : '';
+      html += '<li><span class="t">' + k + '</span><span class="b">' + brief + '</span></li>';
+    });
+    list.innerHTML = html;
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest ? e.target.closest('.gloss') : null;
+    if (!el) return;
+    var k = el.dataset.k;
+    if (saved.has(k)) saved.delete(k); else saved.add(k);
+    persist();
+    sync();
+  });
+
+  var ex = document.getElementById('exportBtn');
+  if (ex) ex.addEventListener('click', function () {
+    var out = Array.from(saved).map(function (k) {
+      var el = document.querySelector('.gloss[data-k="' + k + '"]');
+      return { term: k, brief: el ? el.dataset.brief : '' };
+    });
+    var text = JSON.stringify(out, null, 2);
+    var done = function () { ex.textContent = '已复制'; setTimeout(function () { ex.textContent = '导出 JSON'; }, 1400); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { window.prompt('复制下面的 JSON：', text); });
+    } else {
+      window.prompt('复制下面的 JSON：', text);
+    }
+  });
+
+  var cl = document.getElementById('clearBtn');
+  if (cl) cl.addEventListener('click', function () { saved.clear(); persist(); sync(); });
+
+  sync();
+})();
+</script>
+</body>
+</html>

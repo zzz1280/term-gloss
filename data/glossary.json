@@ -1,0 +1,501 @@
+{
+  "version": "0.2.0",
+  "updated": "2026-10-26",
+  "schema": {
+    "term": "术语原文，必须与回复中的写法逐字一致",
+    "aliases": "同一术语的其它常见写法（英文/缩写/中文别称），用于匹配",
+    "level": "1=影响结论，必须解释；2=背景概念，悬停即可；3=可跳过",
+    "domain": "agent | 评测 | 统计 | 写作 | 判断 | 通用",
+    "brief": "一句话解释，说“在这里指什么”，不说字典释义，建议 ≤ 30 字",
+    "misread": "最常见的一种误读，用来防止“看懂了字面但理解反了”",
+    "status": "ai-draft=AI 起草待你确认；verified=你已确认，可放心复用"
+  },
+  "terms": [
+    {
+      "term": "hook",
+      "aliases": ["Hook", "钩子"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "挂在流程某个节点上的自动触发器，流程走到那儿就执行你预设的动作。",
+      "misread": "不是插件，也不是普通的回调函数；它强调“在别人的流程里插一脚”。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "管线",
+      "aliases": ["pipeline", "Pipeline", "流水线"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "把多个处理步骤串成一条固定链路，前一步的输出就是后一步的输入。",
+      "misread": "不是抽象架构图；它是可以逐段测量、逐段替换的具体链路。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "降级",
+      "aliases": ["graceful degradation", "退化"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "主方案不可用时退到次优方案继续跑，而不是直接报错。",
+      "misread": "不是失败，也不是妥协，是有意设计的兜底路径。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "兜底",
+      "aliases": ["fallback", "Fallback"],
+      "level": 3,
+      "domain": "agent",
+      "brief": "最后一道保险：前面都没接住时用它保证不出事。",
+      "misread": "不是“兜住错误、掩盖问题”；兜底往往意味着结果质量已经下降。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "阈值",
+      "aliases": ["threshold", "Threshold", "门槛值"],
+      "level": 3,
+      "domain": "agent",
+      "brief": "一条分界线：超过就按 A 处理，低于就按 B 处理。",
+      "misread": "不是固定的标准值；调它等于在“多判”和“判错”之间换挡。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "置信度",
+      "aliases": ["confidence", "Confidence"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "模型对自己这个答案的把握程度，通常在 0 到 1 之间。",
+      "misread": "不是正确概率。模型可以很自信地错。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "幂等",
+      "aliases": ["idempotent", "idempotency"],
+      "level": 3,
+      "domain": "agent",
+      "brief": "同样的操作执行一次和执行多次，结果一样。",
+      "misread": "不是“可重复”，是“重复了也不出事”——重试安全的前提。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "沙箱",
+      "aliases": ["sandbox", "Sandbox", "沙盒"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "一个受限的运行环境：程序能在里面跑，但碰不到外面的文件和网络。",
+      "misread": "不是虚拟机，也不是测试环境；它强调的是隔离和权限限制。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "上下文窗口",
+      "aliases": ["context window", "上下文长度"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "模型一次能同时“看到”的文本上限，超出部分会被挤掉。",
+      "misread": "不是记忆容量；它不会累积，每一轮都是重新塞进去。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "token",
+      "aliases": ["Token", "令牌"],
+      "level": 3,
+      "domain": "agent",
+      "brief": "模型处理文本的最小单位，大约一个汉字算 1 到 2 个。",
+      "misread": "不是“字”也不是“词”；计费和长度限制都按它算。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "编排",
+      "aliases": ["orchestration", "Orchestration"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "决定多个步骤、多个模型谁先跑、谁等谁的那一层。",
+      "misread": "不是排序，也不是流程本身；编排是“调度的决策”。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "契约",
+      "aliases": ["contract", "Contract", "接口契约"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "双方约定好的接口格式：我给什么、你返回什么，格式不能变。",
+      "misread": "不是法律合同，也不是说明文档；它是代码层面的强约定。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "回滚",
+      "aliases": ["rollback", "Rollback"],
+      "level": 3,
+      "domain": "agent",
+      "brief": "把系统退回到上一个已知可用的状态。",
+      "misread": "不是撤销某一步操作，也不是重跑一遍。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "灰度",
+      "aliases": ["canary", "灰度发布"],
+      "level": 2,
+      "domain": "agent",
+      "brief": "先让一小部分用户或流量用新版本，没问题再全量。",
+      "misread": "不是“慢慢上线”；本质是拿小流量当探测器。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "基线",
+      "aliases": ["baseline", "Baseline"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "用来做对比的最低标准：新方法至少要明显比它好。",
+      "misread": "不是及格线，也不是最优解；基线太弱时，“提升”没有意义。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "过拟合",
+      "aliases": ["overfitting", "Overfitting"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "模型把训练数据背下来了，换一批新数据就崩。",
+      "misread": "不只是“训练太久”；本质是学到了数据里的噪声。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "数据泄漏",
+      "aliases": ["data leakage", "数据泄露（评测语境）"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "测试集的信息提前漏进了训练，导致测出来的分数虚高。",
+      "misread": "不是隐私意义上的数据泄露，是评测被污染了。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "标签噪声",
+      "aliases": ["label noise", "Label Noise"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "用来当“标准答案”的数据本身就标错了。",
+      "misread": "不是模型预测错，是答案有问题——两者要分开算账。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "弱标签",
+      "aliases": ["weak label", "Weak Label", "弱监督标签"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "不是人工逐条确认的答案，而是从别的结果里推出来的近似答案。",
+      "misread": "不是“质量差一点的标签”；它的来源和可信度都是另一类。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "领域偏移",
+      "aliases": ["domain shift", "Domain Shift", "分布偏移"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "训练时的数据和现在要处理的数据不是同一类东西。",
+      "misread": "不是数据太少，是数据“不像”——单纯加量不一定能救。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "类别不平衡",
+      "aliases": ["class imbalance", "Class Imbalance", "样本不均衡"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "各个类别的样本数量差很多，有的类别特别少。",
+      "misread": "不只是“分布不均”；它会让模型直接放弃小类别，还让准确率虚高。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "Macro-F1",
+      "aliases": ["macro f1", "Macro F1", "宏平均 F1"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "综合“判得准”和“判得全”的分数，且每个类别权重相同。",
+      "misread": "不是准确率；类别多、样本少时，它对最小的那个类别极其敏感。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "精确率",
+      "aliases": ["precision", "Precision", "查准率"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "被判为正的样本里，有多少是真的正例。",
+      "misread": "和召回率此消彼长；单看一个，都能把成绩做得很好看。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "召回率",
+      "aliases": ["recall", "Recall", "查全率"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "真的正例里，被系统抓到了多少。",
+      "misread": "不是“总共有多少”；它衡量的是漏掉了多少。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "交叉验证",
+      "aliases": ["cross-validation", "Cross Validation", "交叉检验"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "把数据分成几份轮流做训练和测试，降低单次划分的偶然性。",
+      "misread": "注意一词两义：有时也指“两套方法互相印证”，要看上下文。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "消融实验",
+      "aliases": ["ablation", "Ablation", "消融"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "故意拿掉一个模块，看性能掉多少，以此证明它确实有用。",
+      "misread": "不是把模型改小；它是一次对照实验，回答“少了它行不行”。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "置信区间",
+      "aliases": ["confidence interval", "Confidence Interval", "CI"],
+      "level": 2,
+      "domain": "统计",
+      "brief": "一个区间，真实值大概率落在里面；区间越宽，说明越不确定。",
+      "misread": "不是“准确率上下浮动几个点”这么随意；它依赖样本量和分布假设。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "局限性声明",
+      "aliases": ["limitations", "Limitations", "局限声明"],
+      "level": 2,
+      "domain": "写作",
+      "brief": "主动交代这套方法在什么情况下不管用。",
+      "misread": "不是谦虚，也不是免责；跳过它，你会把结论用到不该用的地方。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "幻觉",
+      "aliases": ["hallucination", "Hallucination", "胡编"],
+      "level": 2,
+      "domain": "写作",
+      "brief": "模型编造出看起来合理、实际不存在的内容。",
+      "misread": "不是说谎（它没有意图），也不等于记错——是生成时就编了。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "拒识率",
+      "aliases": ["abstain rate", "Abstain Rate", "拒答率"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "系统主动表示“我判不了 / 不回答”的样本比例。",
+      "misread": "不是错误率；判得更果断，不等于判得更对——这是最容易误读的一处。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "规则引擎",
+      "aliases": ["rule engine", "Rule Engine"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "用人工写死的条件做判断的模块，不走模型推理。",
+      "misread": "不是“更笨的模型”；它可预测、可解释，但没有泛化能力。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "判据",
+      "aliases": ["criterion", "判定条件"],
+      "level": 2,
+      "domain": "判断",
+      "brief": "判断某件事成立不成立时，所依据的条件。",
+      "misread": "不是结论，也不是标准答案；它回答的是“凭什么这么判”。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "预写判据",
+      "aliases": ["预置判据", "硬编码判据"],
+      "level": 1,
+      "domain": "判断",
+      "brief": "事先写死在代码里的判定条件，“如果…就判为…”，不是模型临场推理。",
+      "misread": "不是模型“学会了”某种判断，也不是提示词里的要求。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "边界实测",
+      "aliases": ["边界测试", "边缘用例测试"],
+      "level": 1,
+      "domain": "判断",
+      "brief": "专门拿最难、最边缘的样本去跑，看系统在哪里开始失灵。",
+      "misread": "不是随便挑几张试试，也不是跑全量测试集。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "硬编码",
+      "aliases": ["hardcode", "写死"],
+      "level": 3,
+      "domain": "通用",
+      "brief": "把值直接写进代码里，要改就得改代码、重新发布。",
+      "misread": "不是中性的“固定参数”；它通常意味着不灵活、难维护。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "静默失败",
+      "aliases": ["silent failure", "Silent Failure", "悄悄失败"],
+      "level": 2,
+      "domain": "通用",
+      "brief": "出错了但没人知道：不报错、不报警，只是结果悄悄变差。",
+      "misread": "不是崩溃；崩溃反而是好事，至少你知道出事了。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "seed",
+      "aliases": ["随机种子", "random seed"],
+      "level": 3,
+      "domain": "评测",
+      "brief": "训练前固定随机性的初始值；换一个重跑，结果会变。",
+      "misread": "不是重复实验；它检验的是结果稳不稳，不是结果对不对。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "零样本",
+      "aliases": ["zero-shot", "zero shot", "Zero-shot"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "训练时完全没见过这类数据，直接拿去做测试。",
+      "misread": "不是样本量为零，也不是小样本；强调测试目标在训练中完全缺席。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "远程监督",
+      "aliases": ["distant supervision", "Distant Supervision"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "用规则或知识库自动生成标注，不是人工逐条标的。",
+      "misread": "跟“远程网络”无关；“远程”指标注来自现成知识库，而非人工。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "金标准",
+      "aliases": ["gold standard", "Gold Standard", "人工标注答案"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "人工逐条核对过的答案，用来当裁判。",
+      "misread": "不是行业标准文件；它是评测用的参考答案。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "口径",
+      "aliases": ["统计口径", "评测口径"],
+      "level": 1,
+      "domain": "统计",
+      "brief": "算分时用的那套规则：算哪些样本、怎么算。",
+      "misread": "不是统计方法本身；换口径常常比换模型更能改变成绩。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "显著性",
+      "aliases": ["显著", "statistical significance"],
+      "level": 1,
+      "domain": "统计",
+      "brief": "差异大到不像随机波动，才算显著。",
+      "misread": "不是效果好；显著只说明“不太可能是巧合”。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "p 值",
+      "aliases": ["p值", "p-value", "p value"],
+      "level": 2,
+      "domain": "统计",
+      "brief": "假设“其实没差别”，看到这么大差异的概率。",
+      "misread": "不是“结论正确的概率”；p 越小只是越不像巧合。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "配对 t 检验",
+      "aliases": ["paired t-test", "配对检验", "配对t检验"],
+      "level": 2,
+      "domain": "统计",
+      "brief": "同一批样本上比两种方法，看差异是否稳定存在。",
+      "misread": "不是比较两组不同的人；“配对”才是它的关键。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "Bootstrap",
+      "aliases": ["自助法", "bootstrap", "Bootstrap 置信区间"],
+      "level": 2,
+      "domain": "统计",
+      "brief": "反复重采样，估出“真值大概落在哪个范围”。",
+      "misread": "不是跑很多次实验；它是在同一份数据里反复抽。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "Holm 校正",
+      "aliases": ["Holm-Bonferroni", "多重比较校正", "Holm校正"],
+      "level": 2,
+      "domain": "统计",
+      "brief": "同时比较很多组时，压掉“偶然显著”的概率。",
+      "misread": "不是把结果改小；是防止多重比较刷出假阳性。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "κ",
+      "aliases": ["kappa", "Kappa", "Cohen's kappa"],
+      "level": 2,
+      "domain": "统计",
+      "brief": "两个标注人一致的程度，已扣掉“蒙也对”的部分。",
+      "misread": "不是准确率；它衡量的是人与人之间的一致。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "oracle 上界",
+      "aliases": ["oracle", "Oracle 上界", "oracle上界"],
+      "level": 1,
+      "domain": "评测",
+      "brief": "拿标准答案本身算出来的分数，只说明天花板。",
+      "misread": "不是模型能力；它本质上是“用答案算答案”。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "重排器",
+      "aliases": ["reranker", "Reranker", "重排模型"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "先粗筛一批候选，再用模型把候选重新排序。",
+      "misread": "不是搜索框；它只负责把已有候选排得更好。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "IID",
+      "aliases": ["i.i.d.", "独立同分布"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "测试数据和训练数据来自同一批来源、同一分布。",
+      "misread": "不只是书面的“独立同分布”；实际含义是“测试没有跨域”。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "DAPT",
+      "aliases": ["领域自适应预训练", "domain-adaptive pretraining"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "拿领域语料把底座模型再训一遍，让它熟悉这个领域。",
+      "misread": "不是微调任务模型；它动的是底座，不是下游头。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "收敛",
+      "aliases": ["converge", "收敛了"],
+      "level": 3,
+      "domain": "评测",
+      "brief": "继续训练也不再变好，性能曲线平了。",
+      "misread": "不等于训练成功；它可能停在半路，也可能已经过拟合。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "epoch",
+      "aliases": ["Epoch", "轮次"],
+      "level": 3,
+      "domain": "评测",
+      "brief": "把全部训练数据过完一遍，叫一个 epoch。",
+      "misread": "不是迭代次数；一轮里通常包含很多次参数更新。",
+      "status": "ai-draft"
+    },
+    {
+      "term": "NIL",
+      "aliases": ["nil"],
+      "level": 2,
+      "domain": "评测",
+      "brief": "表示“这里没有对应实体”的那个标签。",
+      "misread": "不是空值报错；它是一个合法的预测选项。",
+      "status": "ai-draft"
+    }
+  ]
+}
